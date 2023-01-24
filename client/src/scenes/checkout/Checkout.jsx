@@ -4,4 +4,4 @@ const Checkout = () => {
   return <div>Checkout</div>;
 };
 
-export default Checkout;
+export default React.memo(Checkout);

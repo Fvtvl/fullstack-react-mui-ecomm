@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { Box, IconButton } from '@mui/material';
+import { Badge, Box, IconButton } from '@mui/material';
 import { shades } from '../../styles/theme';
 import {
   SearchOutlined,
@@ -9,10 +9,22 @@ import {
   ShoppingBagOutlined,
   MenuOutlined,
 } from '@mui/icons-material';
+import { setIsCartOpen } from '../../state';
 
-const Navbar = () => {
+const Navbar = React.memo(() => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const cart = useSelector((state) => state.cart.cart);
+
+  const handleClick = useCallback(() => {
+    navigate('/');
+  }, [navigate]);
+
+  const handleCartOpen = useCallback(() => {
+    dispatch(setIsCartOpen({}));
+  }, [dispatch]);
+
+  const badgeContent = useMemo(() => cart.length, [cart]);
 
   return (
     <Box
@@ -20,7 +32,7 @@ const Navbar = () => {
       alignItems="center"
       width="100%"
       height="60px"
-      backgraundColor="rgba(255,255,255,0.95)"
+      backgroundColor="rgba(255,255,255,0.95)"
       color="black"
       position="fixed"
       top="0"
@@ -35,13 +47,13 @@ const Navbar = () => {
         alignItems="center"
       >
         <Box
-          onClick={() => navigate('/')}
+          onClick={handleClick}
           sx={{
             '&:hover': { cursor: 'pointer' },
           }}
           color={shades.secondary[500]}
         >
-          Fvtvl-shop
+          FVTVL-SHOP
         </Box>
         <Box
           display="flex"
@@ -55,9 +67,24 @@ const Navbar = () => {
           <IconButton sx={{ color: 'black' }}>
             <PersonOutlined />
           </IconButton>
-          <IconButton sx={{ color: 'black' }}>
-            <ShoppingBagOutlined />
-          </IconButton>
+          <Badge
+            badgeContent={badgeContent}
+            color="secondary"
+            invisible={badgeContent === 0}
+            sx={{
+              '& .MuiBadge-badge': {
+                right: 5,
+                top: 5,
+                padding: ' 0 4px',
+                height: '14px',
+                minWidth: '13px',
+              },
+            }}
+          >
+            <IconButton onClick={handleCartOpen} sx={{ color: 'black' }}>
+              <ShoppingBagOutlined />
+            </IconButton>
+          </Badge>
           <IconButton sx={{ color: 'black' }}>
             <MenuOutlined />
           </IconButton>
@@ -65,6 +92,6 @@ const Navbar = () => {
       </Box>
     </Box>
   );
-};
+});
 
 export default Navbar;

@@ -4,4 +4,4 @@ const ItemDetails = () => {
   return <div>ItemDetails</div>;
 };
 
-export default ItemDetails;
+export default React.memo(ItemDetails);
