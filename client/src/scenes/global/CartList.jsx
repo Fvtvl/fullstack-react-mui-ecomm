@@ -31,9 +31,9 @@ const CartList = ({ cart }) => {
               <img
                 alt={item?.name}
                 width="123px"
-                height="165px"
+                height="140px"
                 loading="lazy"
-                src={`http://localhost:1337${item?.attributes?.image?.data?.attributes?.formats?.medium?.url}`}
+                src={`http://localhost:1337${item?.attributes?.image?.data?.attributes?.formats?.small?.url}`}
               />
             </Box>
             <Box flex="1 1 60%">

@@ -1,5 +1,12 @@
 import React, { useCallback, useMemo } from 'react';
-import { Box, Button, Drawer, IconButton, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  Drawer,
+  IconButton,
+  Typography,
+  useMediaQuery,
+} from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
 import CloseIcon from '@mui/icons-material/Close';
 import { shades } from '../../styles/theme';
@@ -9,6 +16,7 @@ import CartList from './CartList';
 import { FlexBox } from '../../styles/FlexBox';
 
 const CartMenu = () => {
+  const isNonMobile = useMediaQuery('(min-width: 600px');
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart.cart);
@@ -62,7 +70,12 @@ const CartMenu = () => {
           //   },
           // }}
         >
-          <Box padding="30px" overflow="auto" height="100%" width="400px">
+          <Box
+            padding="30px"
+            overflow="auto"
+            height="100%"
+            sx={{ width: isNonMobile ? '400px' : 'full' }}
+          >
             {/* header */}
             <FlexBox mb="15px">
               <Typography variant="h3">SHOPING BAG ({cart.length})</Typography>

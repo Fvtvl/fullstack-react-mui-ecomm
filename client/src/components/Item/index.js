@@ -4,9 +4,10 @@ import { useDispatch } from 'react-redux';
 import { Box, Button, IconButton, Typography, useTheme } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
-import { shades } from '../styles/theme';
-import { addToCart } from '../state';
+import { shades } from '../../styles/theme';
+import { addToCart } from '../../state';
 import { useNavigate } from 'react-router-dom';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 const Item = React.memo(({ item, width }) => {
   const navigate = useNavigate();
@@ -22,7 +23,7 @@ const Item = React.memo(({ item, width }) => {
     data: {
       attributes: {
         formats: {
-          medium: { url },
+          small: { url },
         },
       },
     },
@@ -45,16 +46,17 @@ const Item = React.memo(({ item, width }) => {
         onMouseOver={() => setIsHovered(true)}
         onMouseOut={() => setIsHovered(false)}
       >
-        <img
+        <LazyLoadImage
           alt={item.name}
-          width="300px"
-          height="400px"
+          width="100%"
+          height="100%"
           src={`http://localhost:1337${url}`}
           onClick={() => handleNavigate(item.id)}
           style={{ cursor: 'pointer' }}
-        />
+          effect="blur"
+        ></LazyLoadImage>
         <Box
-          display={isHovered ? 'blocked' : 'none'}
+          display={isHovered ? 'block' : 'none'}
           position="absolute"
           bottom="10%"
           left="0"
