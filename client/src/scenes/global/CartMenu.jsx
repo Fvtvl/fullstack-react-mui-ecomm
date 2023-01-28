@@ -74,7 +74,7 @@ const CartMenu = () => {
             padding="30px"
             overflow="auto"
             height="100%"
-            sx={{ width: isNonMobile ? '400px' : 'full' }}
+            sx={{ width: isNonMobile ? '400px' : '100vw' }}
           >
             {/* header */}
             <FlexBox mb="15px">

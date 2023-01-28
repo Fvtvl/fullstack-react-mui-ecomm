@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   Box,
   Typography,
@@ -10,10 +10,14 @@ import {
 import Item from '../../components/Item';
 import useHomeFetch from '../../hooks/useHomeFetch';
 import Spinner from '../../components/Spiner';
+import { setPage } from '../../state';
+import { useDispatch } from 'react-redux';
+import { shades } from '../../styles/theme';
 
 const ShoppingList = React.memo(() => {
   const {
     items,
+    page,
     setIsLoadingMore,
     loading,
     error,
@@ -21,12 +25,18 @@ const ShoppingList = React.memo(() => {
     newArrivalsItems,
     topRatedItems,
   } = useHomeFetch();
+  const dispatch = useDispatch();
   const [value, setValue] = useState('all');
   const isNonMobile = useMediaQuery('(min-width: 690px');
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+  const handleLoadMore = useCallback(() => {
+    dispatch(setPage());
+    setIsLoadingMore(true);
+  }, [dispatch, setIsLoadingMore]);
+
   if (error)
     return <Typography variant="h3">Something went wrong...</Typography>;
 
@@ -54,7 +64,7 @@ const ShoppingList = React.memo(() => {
         <Tab label="BEST SELLERS" value="bestSellers" />
         <Tab label="TOP RATED" value="topRated" />
       </Tabs>
-      {loading && <Spinner />}
+
       <Box
         margin="0 auto"
         justifyContent="space-around"
@@ -67,6 +77,7 @@ const ShoppingList = React.memo(() => {
           columnGap: isNonMobile ? '1.33%' : '20px',
         }}
       >
+        {loading && <Spinner />}
         {value === 'all' &&
           items.map((item) => (
             <Item item={item} key={`${item.name}-${item.id}`} />
@@ -84,7 +95,23 @@ const ShoppingList = React.memo(() => {
             <Item item={item} key={`${item.name}-${item.id}`} />
           ))}
       </Box>
-      {/* <Button onClick={() => setIsLoadingMore(true)}>Load more</Button> */}
+      <Box display="flex" justifyContent="center" alignItems="center" mt="20px">
+        <Button
+          sx={{
+            backgroundColor: shades.primary[400],
+            ':hover': { backgroundColor: shades.primary[800] },
+            color: 'white',
+            borderRadius: 0,
+            padding: '10px 10px',
+            m: '20px 0',
+          }}
+          onClick={() => {
+            handleLoadMore();
+          }}
+        >
+          Load more products
+        </Button>
+      </Box>
     </Box>
   );
 });

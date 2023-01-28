@@ -6,9 +6,11 @@ import API from '../API';
 export const useHomeFetch = () => {
   const dispatch = useDispatch();
   const items = useSelector((state) => state.cart.items);
+  const page = useSelector((state) => state.cart.page);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
 
   const fetchItems = async (page) => {
     try {
@@ -25,11 +27,19 @@ export const useHomeFetch = () => {
   };
 
   useEffect(() => {
-    fetchItems(0);
+    fetchItems(page);
   }, []);
+
+  useEffect(() => {
+    if (!isLoadingMore) return;
+
+    fetchItems(page);
+    setIsLoadingMore(false);
+  }, [isLoadingMore, page]);
 
   return {
     items,
+    setIsLoadingMore,
     loading,
     error,
     bestSellersItems: items.filter(

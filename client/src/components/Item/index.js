@@ -1,5 +1,4 @@
-import React, { useCallback } from 'react';
-import { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import {
   Box,
@@ -14,7 +13,6 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import { shades } from '../../styles/theme';
 import { addToCart } from '../../state';
 import { useNavigate } from 'react-router-dom';
-import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 const Item = React.memo(({ item, width }) => {
   const navigate = useNavigate();
@@ -54,14 +52,14 @@ const Item = React.memo(({ item, width }) => {
         onMouseOver={() => setIsHovered(true)}
         onMouseOut={() => setIsHovered(false)}
       >
-        <LazyLoadImage
+        <img
           alt={item.name}
           width="100%"
           height="100%"
           src={`http://localhost:1337${url}`}
           onClick={() => handleNavigate(item.id)}
           style={{ cursor: 'pointer' }}
-        ></LazyLoadImage>
+        />
         <Box
           display={isHovered && isNonMobile ? 'block' : 'none'}
           position="absolute"

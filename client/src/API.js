@@ -4,7 +4,7 @@ const apiSettings = {
   fetchItems: async (page) => {
     return await (
       await fetch(
-        `${API_URL}/api/items?populate=image&pagination[start]=${page}&pagination[limit]=16`,
+        `${API_URL}/api/items?populate=image&pagination[start]=${page}&pagination[limit]=12`,
         { method: 'GET' }
       )
     ).json();

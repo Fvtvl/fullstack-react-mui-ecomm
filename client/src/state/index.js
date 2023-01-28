@@ -12,7 +12,20 @@ export const cartSlice = createSlice({
   initialState,
   reducers: {
     setItems: (state, action) => {
-      state.items = action.payload;
+      state.page > 0
+        ? state.items.push(
+            ...action.payload.filter(
+              (item) =>
+                state.items.findIndex((itm) => itm.id === item.id) === -1
+            )
+          )
+        : (state.items = action.payload);
+    },
+
+    setPage: (state) => {
+      state.page === state.items.length
+        ? (state.page = state.items.length)
+        : (state.page = state.page + 12);
     },
     addToCart: (state, action) => {
       const exists = state.cart.find(
@@ -50,6 +63,7 @@ export const cartSlice = createSlice({
 
 export const {
   setItems,
+  setPage,
   addToCart,
   removeFromCart,
   increaseCount,

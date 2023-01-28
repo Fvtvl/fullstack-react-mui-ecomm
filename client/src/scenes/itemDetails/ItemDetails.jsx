@@ -10,18 +10,14 @@ import useHomeFetch from '../../hooks/useHomeFetch';
 import { API_URL } from '../../config';
 import { useItemFetch } from '../../hooks/useItemFetch';
 import { Box, Button, IconButton, Tab, Tabs, Typography } from '@mui/material';
-import { LazyLoadImage } from 'react-lazy-load-image-component';
 import Spinner from '../../components/Spiner';
 
 const ItemDetails = React.memo(() => {
   const { item, loading, error } = useItemFetch();
   const { items } = useHomeFetch(API_URL);
-  console.log('ItemDetails  items', items);
   const dispatch = useDispatch();
   const [value, setValue] = useState('description');
   const [count, setCount] = useState(1);
-  // const [item, setItem] = useState(null);
-  // const [items, setItems] = useState([]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -37,12 +33,10 @@ const ItemDetails = React.memo(() => {
         {/* images */}
         <Box flex="1 1 40%" mb="40px">
           {loading && <Spinner />}
-          <LazyLoadImage
+          <img
             alt={item?.name}
             width="100%"
             height="100%"
-            loading="lazy"
-            effect="blur"
             src={`http://localhost:1337${item?.attributes?.image?.data?.attributes?.formats?.small?.url}`}
             style={{ objectFit: 'contain' }}
           />
