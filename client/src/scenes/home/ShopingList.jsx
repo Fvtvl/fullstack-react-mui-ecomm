@@ -1,26 +1,34 @@
 import React, { useState } from 'react';
-import { Box, Typography, Tab, Tabs, useMediaQuery } from '@mui/material';
+import {
+  Box,
+  Typography,
+  Tab,
+  Tabs,
+  useMediaQuery,
+  Button,
+} from '@mui/material';
 import Item from '../../components/Item';
 import useHomeFetch from '../../hooks/useHomeFetch';
-import { API_URL } from '../../config';
+import Spinner from '../../components/Spiner';
 
 const ShoppingList = React.memo(() => {
   const {
     items,
+    setIsLoadingMore,
     loading,
     error,
     bestSellersItems,
     newArrivalsItems,
     topRatedItems,
-  } = useHomeFetch(API_URL);
+  } = useHomeFetch();
   const [value, setValue] = useState('all');
   const isNonMobile = useMediaQuery('(min-width: 690px');
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-
-  if (error) return <div>Something went wrong...</div>;
+  if (error)
+    return <Typography variant="h3">Something went wrong...</Typography>;
 
   return (
     <Box width="90%" margin="80px auto">
@@ -46,6 +54,7 @@ const ShoppingList = React.memo(() => {
         <Tab label="BEST SELLERS" value="bestSellers" />
         <Tab label="TOP RATED" value="topRated" />
       </Tabs>
+      {loading && <Spinner />}
       <Box
         margin="0 auto"
         justifyContent="space-around"
@@ -75,6 +84,7 @@ const ShoppingList = React.memo(() => {
             <Item item={item} key={`${item.name}-${item.id}`} />
           ))}
       </Box>
+      {/* <Button onClick={() => setIsLoadingMore(true)}>Load more</Button> */}
     </Box>
   );
 });

@@ -4,6 +4,7 @@ const initialState = {
   isCartOpen: false,
   cart: [],
   items: [],
+  page: 0,
 };
 
 export const cartSlice = createSlice({

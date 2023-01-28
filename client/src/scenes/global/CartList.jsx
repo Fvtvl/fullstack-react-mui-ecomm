@@ -33,6 +33,7 @@ const CartList = ({ cart }) => {
                 width="123px"
                 height="140px"
                 loading="lazy"
+                effect="blur"
                 src={`http://localhost:1337${item?.attributes?.image?.data?.attributes?.formats?.small?.url}`}
               />
             </Box>

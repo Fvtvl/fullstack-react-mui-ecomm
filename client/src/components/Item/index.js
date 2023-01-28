@@ -1,7 +1,14 @@
 import React, { useCallback } from 'react';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Box, Button, IconButton, Typography, useTheme } from '@mui/material';
+import {
+  Box,
+  Button,
+  IconButton,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { shades } from '../../styles/theme';
@@ -14,6 +21,7 @@ const Item = React.memo(({ item, width }) => {
   const dispatch = useDispatch();
   const [count, setCount] = useState(1);
   const [isHovered, setIsHovered] = useState(false);
+  const isNonMobile = useMediaQuery('(min-width: 690px');
   const {
     palette: { neutral },
   } = useTheme();
@@ -53,10 +61,9 @@ const Item = React.memo(({ item, width }) => {
           src={`http://localhost:1337${url}`}
           onClick={() => handleNavigate(item.id)}
           style={{ cursor: 'pointer' }}
-          effect="blur"
         ></LazyLoadImage>
         <Box
-          display={isHovered ? 'block' : 'none'}
+          display={isHovered && isNonMobile ? 'block' : 'none'}
           position="absolute"
           bottom="10%"
           left="0"
@@ -83,7 +90,11 @@ const Item = React.memo(({ item, width }) => {
             {/*  button*/}
             <Button
               onClick={() => handleAddToCart()}
-              sx={{ backgroundColor: shades.primary[300], color: 'white' }}
+              sx={{
+                backgroundColor: shades.primary[300],
+                color: 'white',
+                ':hover': { backgroundColor: shades.primary[800] },
+              }}
             >
               Add to Cart
             </Button>

@@ -1,24 +1,23 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setItems } from '../state';
+import API from '../API';
 
-export const useHomeFetch = (url) => {
+export const useHomeFetch = () => {
   const dispatch = useDispatch();
   const items = useSelector((state) => state.cart.items);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
-  const fetchData = async () => {
+  const fetchItems = async (page) => {
     try {
       setError(false);
       setLoading(true);
 
-      const item = await fetch(`${url}`, {
-        method: 'GET',
-      });
-      const itemsJson = await item.json();
-      dispatch(setItems(itemsJson.data));
+      const response = await API.fetchItems(page);
+
+      dispatch(setItems(response.data));
     } catch (error) {
       setError(true);
     }
@@ -26,8 +25,8 @@ export const useHomeFetch = (url) => {
   };
 
   useEffect(() => {
-    fetchData();
-  }, [url]);
+    fetchItems(0);
+  }, []);
 
   return {
     items,
