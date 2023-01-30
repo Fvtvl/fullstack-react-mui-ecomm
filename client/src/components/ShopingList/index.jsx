@@ -7,9 +7,9 @@ import {
   useMediaQuery,
   Button,
 } from '@mui/material';
-import Item from '../../components/Item';
+import Item from '../Item';
 import useHomeFetch from '../../hooks/useHomeFetch';
-import Spinner from '../../components/Spiner';
+import Spinner from '../Spiner';
 import { setPage } from '../../state';
 import { useDispatch } from 'react-redux';
 import { shades } from '../../styles/theme';
@@ -17,7 +17,6 @@ import { shades } from '../../styles/theme';
 const ShoppingList = React.memo(() => {
   const {
     items,
-    page,
     setIsLoadingMore,
     loading,
     error,
@@ -64,7 +63,7 @@ const ShoppingList = React.memo(() => {
         <Tab label="BEST SELLERS" value="bestSellers" />
         <Tab label="TOP RATED" value="topRated" />
       </Tabs>
-
+      {loading && <Spinner />}
       <Box
         margin="0 auto"
         justifyContent="space-around"
@@ -77,7 +76,6 @@ const ShoppingList = React.memo(() => {
           columnGap: isNonMobile ? '1.33%' : '20px',
         }}
       >
-        {loading && <Spinner />}
         {value === 'all' &&
           items.map((item) => (
             <Item item={item} key={`${item.name}-${item.id}`} />
@@ -95,6 +93,7 @@ const ShoppingList = React.memo(() => {
             <Item item={item} key={`${item.name}-${item.id}`} />
           ))}
       </Box>
+      {items.length >= 12 && loading && <Spinner />}
       <Box display="flex" justifyContent="center" alignItems="center" mt="20px">
         <Button
           sx={{

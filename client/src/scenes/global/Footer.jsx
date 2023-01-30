@@ -1,8 +1,9 @@
 import React from 'react';
-import { Box, Typography, useTheme } from '@mui/material';
+import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { shades } from '../../styles/theme';
 
 const Footer = () => {
+  const isNonMobile = useMediaQuery('(min-width: 690px');
   const {
     palette: { neutral },
   } = useTheme();
@@ -26,6 +27,7 @@ const Footer = () => {
           >
             FVTVL-SHOP
           </Typography>
+
           <Typography>
             Lorem ipsum dolor sit amet consectetur, adipisicing elit. Dolor
             nostrum quam nulla blanditiis voluptate libero? Debitis aliquam
@@ -33,7 +35,7 @@ const Footer = () => {
             neque perspiciatis?
           </Typography>
         </Box>
-        <Box>
+        <Box display={isNonMobile ? 'block' : 'none'}>
           <Typography variant="h4" fontWeight="bold" mb="30px">
             About Us
           </Typography>
@@ -42,7 +44,7 @@ const Footer = () => {
           <Typography mb="30px">Term & Conditions</Typography>
           <Typography mb="30px">Privacy Policy</Typography>
         </Box>
-        <Box>
+        <Box display={isNonMobile ? 'block' : 'none'}>
           <Typography variant="h4" fontWeight="bold" mb="30px">
             Custom Care
           </Typography>

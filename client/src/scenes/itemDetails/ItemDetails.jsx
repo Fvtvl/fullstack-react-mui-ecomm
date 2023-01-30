@@ -25,6 +25,7 @@ const ItemDetails = React.memo(() => {
   const handleAddToCart = useCallback(() => {
     dispatch(addToCart({ item: { ...item, count } }));
   }, [dispatch, count, item]);
+  if (loading) return <Spinner />;
   if (error)
     return <Typography variant="h3">Something went wrong...</Typography>;
   return (
@@ -32,7 +33,6 @@ const ItemDetails = React.memo(() => {
       <Box display="flex" flexWrap="wrap" columnGap="40px">
         {/* images */}
         <Box flex="1 1 40%" mb="40px">
-          {loading && <Spinner />}
           <img
             alt={item?.name}
             width="100%"
