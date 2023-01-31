@@ -6,6 +6,7 @@ import { chekoutSchema, initialValues } from './validation';
 import Shipping from '../../components/Shipping';
 import { shades } from '../../styles/theme';
 import Payment from '../payment';
+import { makePayment } from './makePayment';
 
 const Checkout = () => {
   const [activeStep, setActiveStep] = useState(0);
@@ -22,12 +23,11 @@ const Checkout = () => {
       });
     }
     if (isSecondStep) {
-      makePayment(values);
+      makePayment(values, cart);
     }
     actions.setTouched({});
   };
 
-  async function makePayment(values) {}
   return (
     <Box width="80%" m="100px auto">
       <Stepper activeStep={activeStep} sx={{ m: '20px 0' }}>
@@ -107,8 +107,7 @@ const Checkout = () => {
                     borderRadius: 0,
                     padding: '15px 40px',
                   }}
-                  onClick={() => setActiveStep(activeStep + 1)}
-                  disabled={!(dirty && isValid)}
+                  disabled={!(dirty && isValid) && isFirstStep}
                 >
                   {isFirstStep ? 'Next' : 'Place Order'}
                 </Button>

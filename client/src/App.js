@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import Checkout from './scenes/checkout/Checkout';
-import Confirmatios from './scenes/checkout/Confirmation';
+import Confirmation from './scenes/confirmation';
 import CartMenu from './scenes/global/CartMenu';
 import Footer from './scenes/global/Footer';
 import Navbar from './scenes/global/Navbar';
@@ -28,7 +28,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="item/:itemId" element={<ItemDetails />} />
           <Route path="checkout" element={<Checkout />} />
-          <Route path="checkout/succes" element={<Confirmatios />} />
+          <Route path="checkout/success" element={<Confirmation />} />
         </Routes>
         <CartMenu />
         <Footer />
