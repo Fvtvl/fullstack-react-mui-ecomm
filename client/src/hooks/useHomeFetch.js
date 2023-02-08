@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setItems } from '../state';
+import { isPersistedState } from '../helpers';
 import API from '../API';
 
 export const useHomeFetch = () => {
@@ -27,6 +28,17 @@ export const useHomeFetch = () => {
   };
 
   useEffect(() => {
+    if (items.length !== 0) {
+      const sessionState = isPersistedState('homeState');
+
+      if (sessionState) {
+        console.log('useEffect  sessionState', sessionState);
+
+        dispatch(setItems(sessionState));
+        return;
+      }
+    }
+    console.log('api');
     fetchItems(page);
   }, []);
 
@@ -36,6 +48,10 @@ export const useHomeFetch = () => {
     fetchItems(page);
     setIsLoadingMore(false);
   }, [isLoadingMore, page]);
+
+  useEffect(() => {
+    sessionStorage.setItem('homeState', JSON.stringify(items));
+  }, [items]);
 
   return {
     items,
