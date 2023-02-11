@@ -1,8 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { isPersistedCart } from '../helpers';
+
+const localState = (state) => {
+  localStorage.setItem(
+    'cartItems',
+    JSON.stringify(state.cart.map((item) => item))
+  );
+};
 
 const initialState = {
   isCartOpen: false,
-  cart: [],
+  cart: isPersistedCart,
   items: [],
   page: 0,
 };
@@ -34,10 +42,12 @@ export const cartSlice = createSlice({
       if (!exists) {
         state.cart = [...state.cart, action.payload.item];
       }
+      localState(state);
     },
 
     removeFromCart: (state, action) => {
       state.cart = state.cart.filter((item) => item.id !== action.payload.id);
+      localState(state);
     },
     increaseCount: (state, action) => {
       state.cart = state.cart.map((item) => {
@@ -46,6 +56,7 @@ export const cartSlice = createSlice({
         }
         return item;
       });
+      localState(state);
     },
     decreaseCount: (state, action) => {
       state.cart = state.cart.map((item) => {
@@ -54,6 +65,8 @@ export const cartSlice = createSlice({
         }
         return item;
       });
+
+      localState(state);
     },
     setIsCartOpen: (state) => {
       state.isCartOpen = !state.isCartOpen;

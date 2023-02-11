@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import API from '../API';
+import { isPersistedState } from '../helpers';
 
 export const useItemFetch = () => {
-  const [item, setItem] = useState(null);
+  const [item, setItem] = useState({});
   const { itemId } = useParams();
 
   const [loading, setLoading] = useState(false);
@@ -23,8 +24,22 @@ export const useItemFetch = () => {
   };
 
   useEffect(() => {
+    const sessionState = isPersistedState(itemId);
+    console.log('useEffect  sessionState', sessionState);
+    if (sessionState) {
+      console.log('from session');
+      setItem(sessionState);
+      setLoading(false);
+      return;
+    }
     getItem(itemId);
+    console.log('fetching data');
   }, [itemId]);
+
+  useEffect(() => {
+    if (item.id === Number(itemId))
+      sessionStorage.setItem(itemId, JSON.stringify(item));
+  }, [itemId, item]);
 
   return {
     item,

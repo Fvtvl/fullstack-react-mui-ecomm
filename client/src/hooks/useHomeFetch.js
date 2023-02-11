@@ -28,15 +28,13 @@ export const useHomeFetch = () => {
   };
 
   useEffect(() => {
-    if (items.length !== 0) {
-      const sessionState = isPersistedState('homeState');
+    const sessionState = isPersistedState('homeState');
 
-      if (sessionState) {
-        console.log('useEffect  sessionState', sessionState);
+    if (sessionState) {
+      console.log('useEffect  sessionState', sessionState);
 
-        dispatch(setItems(sessionState));
-        return;
-      }
+      dispatch(setItems(sessionState));
+      return;
     }
     console.log('api');
     fetchItems(page);
@@ -50,7 +48,8 @@ export const useHomeFetch = () => {
   }, [isLoadingMore, page]);
 
   useEffect(() => {
-    sessionStorage.setItem('homeState', JSON.stringify(items));
+    if (items.length !== 0)
+      sessionStorage.setItem('homeState', JSON.stringify(items));
   }, [items]);
 
   return {
